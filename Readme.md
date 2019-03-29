@@ -8,7 +8,8 @@ How to run :
         go get github.com/gorilla/mux       --> router library
         go get -u github.com/jinzhu/gorm    --> ORM library
 
-3. To start the service execute
+3. Configure your db connection and http port at config/config.go
+4. To start the service execute
 
         go run main.go
 
