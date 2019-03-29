@@ -1,6 +1,7 @@
 package main
 
 import (
+	"cockroach-test/config"
 	"cockroach-test/queries"
 	"fmt"
 	"log"
@@ -17,6 +18,7 @@ func main() {
 	router.HandleFunc("/jabatan/update/{id}", queries.UpdateJabatan).Methods("POST", "GET")
 
 	http.Handle("/", router)
-	fmt.Println("Connected to port 1234")
-	log.Fatal(http.ListenAndServe(":1234", router))
+	conf := config.SetConfig()
+	fmt.Println("Connected to port " + conf.HttpPort)
+	log.Fatal(http.ListenAndServe(":"+conf.HttpPort, router))
 }

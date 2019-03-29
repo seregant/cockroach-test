@@ -1,10 +1,11 @@
 package config
 
 type Config struct {
-	Host   string
-	Port   string
-	User   string
-	DbName string
+	Host     string
+	Port     string
+	User     string
+	DbName   string
+	HttpPort string
 }
 
 func SetConfig() Config {
@@ -15,6 +16,6 @@ func SetConfig() Config {
 	config.Port = "26257" //cockroachdb's port
 	config.User = "maxcroach"
 	config.DbName = "karyawan"
-
+	config.HttpPort = "1234"
 	return config
 }
