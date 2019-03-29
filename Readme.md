@@ -10,7 +10,7 @@ How to run :
 
 3. To start the service execute
 
-    go run main.go
+        go run main.go
 
 
 ### Api Routes
