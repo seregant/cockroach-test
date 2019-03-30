@@ -6,6 +6,7 @@ type Config struct {
 	User     string
 	DbName   string
 	HttpPort string
+	SrvKey   string
 }
 
 func SetConfig() Config {
@@ -17,5 +18,6 @@ func SetConfig() Config {
 	config.User = "maxcroach"
 	config.DbName = "karyawan"
 	config.HttpPort = "1234"
+	config.SrvKey = "Aw4s_g4l4k"
 	return config
 }

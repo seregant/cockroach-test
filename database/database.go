@@ -1,10 +1,11 @@
 package database
 
 import (
-	"cockroach-test/config"
-	"cockroach-test/structs"
 	"fmt"
 	"log"
+
+	"github.com/seregant/cockroach-test/config"
+	"github.com/seregant/cockroach-test/structs"
 
 	"github.com/jinzhu/gorm"
 )

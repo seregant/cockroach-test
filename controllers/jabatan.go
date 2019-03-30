@@ -1,16 +1,14 @@
-package queries
+package controllers
 
 import (
-	"cockroach-test/database"
-	"cockroach-test/structs"
-	"encoding/json"
-	"net/http"
-
-	"github.com/gorilla/mux"
+	gin "github.com/gin-gonic/gin"
+	"github.com/seregant/cockroach-test/database"
+	"github.com/seregant/cockroach-test/structs"
 )
 
-func GetAllJabatan(w http.ResponseWriter, r *http.Request) {
+type Jabatan struct{}
 
+func (w *Jabatan) GetAllJabatan(c *gin.Context) {
 	var arr_jabatan []structs.ResJabatan
 	var response structs.DataResponse
 	var jabatan []structs.Jabatan
@@ -28,26 +26,27 @@ func GetAllJabatan(w http.ResponseWriter, r *http.Request) {
 	response.Message = "Success"
 	response.Data = arr_jabatan
 
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(response)
-
+	c.JSON(200, response)
 }
 
-func UpdateJabatan(w http.ResponseWriter, r *http.Request) {
-	if r.Method == "GET" {
-		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
+func (w *Jabatan) UpdateJabatan(c *gin.Context) {
+	if c.Request.Method == "GET" {
+		c.JSON(405, gin.H{
+			"status":  "405",
+			"message": "method not allowed",
+		})
 	} else {
 		var response structs.StdrResponse
-		r.ParseForm()
+		c.Request.ParseForm()
 
-		urlVars := mux.Vars(r)
-		var IDtoEdit = urlVars["id"]
+		var IDtoEdit = c.Param("id_jabatan")
+		var UpdatedData, _ = c.GetPostForm("NamaJabatan")
 
 		db := database.DbConnect()
 		db.LogMode(true)
 		defer db.Close()
 
-		update := db.Model(&structs.Jabatan{}).Where("jabatan_id = ?", IDtoEdit).Update("NamaJabatan", r.FormValue("NamaJabatan"))
+		update := db.Model(&structs.Jabatan{}).Where("jabatan_id = ?", IDtoEdit).Update("NamaJabatan", UpdatedData)
 
 		if update.GetErrors() != nil {
 
@@ -64,14 +63,12 @@ func UpdateJabatan(w http.ResponseWriter, r *http.Request) {
 			response.Status = 204
 			response.Message = errData[0].message
 
-			w.Header().Set("Content-Type", "application/json")
-			json.NewEncoder(w).Encode(response)
+			c.JSON(200, response)
 		} else {
 			response.Status = 200
 			response.Message = "Success"
 
-			w.Header().Set("Content-Type", "application/json")
-			json.NewEncoder(w).Encode(response)
+			c.JSON(200, response)
 		}
 	}
 }

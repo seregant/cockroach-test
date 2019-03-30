@@ -1,13 +1,14 @@
 ## Simple crud restAPI service with go and cockroachDB
 How to run :
 
-1. Clone it to your $GOPATH
+1. Clone it to your $GOPATH and install govendor
+
+        go get github.com/seregant/cockroach-test
+        go get -u github.com/kardianos/govendor
+
 2. Get the libraries
         
-        go get github.com/lib/pq                  --> PostgreSQL driver (compatible with cockroachDB)
-        go get github.com/gorilla/mux             --> router library
-        go get github.com/jinzhu/gorm             --> ORM library
-
+        govendor sync
 
 3. Configure your db connection and http port at config/config.go
 4. To start the service execute
