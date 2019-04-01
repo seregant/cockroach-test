@@ -3,9 +3,9 @@ package structs
 var prefix = "krywn_"
 
 type Pegawai struct {
-	IDPegawai int    `gorm:"primary_key;column:pegawai_id;AUTO_INCREMENT;size:6"`
-	Nama      string `gorm:"column:pegawai_nama;size:25"`
-	Alamat    string `gorm:"column:pegawai_alamat;size:150"`
+	IDPegawai int    `gorm:"primary_key:yes;column:pegawai_id;auto_increment:yes"`
+	Nama      string `gorm:"column:pegawai_nama"`
+	Alamat    string `gorm:"column:pegawai_alamat"`
 }
 
 func (Pegawai) TableName() string {
@@ -13,8 +13,8 @@ func (Pegawai) TableName() string {
 }
 
 type Divisi struct {
-	IDDivisi   int    `gorm:"primary_key;column:divisi_id;AUTO_INCREMENT;size:6"`
-	NamaDivisi string `gorm:"column:divisi_nama;size:50"`
+	IDDivisi   int    `gorm:"primary_key:yes;column:divisi_id;auto_increment:yes"`
+	NamaDivisi string `gorm:"column:divisi_nama"`
 }
 
 func (Divisi) TableName() string {
@@ -22,8 +22,8 @@ func (Divisi) TableName() string {
 }
 
 type Jabatan struct {
-	IDJabatan   int    `gorm:"primary_key;column:jabatan_id;AUTO_INCREMENT;size:6"`
-	NamaJabatan string `gorm:"column:jabatan_nama;size:50"`
+	IDJabatan   int    `gorm:"primary_key:yes;column:jabatan_id;auto_increment:yes"`
+	NamaJabatan string `gorm:"column:jabatan_nama"`
 }
 
 func (Jabatan) TableName() string {

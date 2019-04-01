@@ -1,7 +1,7 @@
 package main
 
 import (
-	"strings"
+	"github.com/seregant/cockroach-test/middleware"
 
 	gin "github.com/gin-gonic/gin"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
@@ -12,52 +12,36 @@ import (
 
 var conf = config.SetConfig()
 
-var key = conf.SrvKey
-
-func middleware() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		bearer := c.Request.Header.Get("Authorization")
-		if bearer != "" {
-			strSplit := strings.Split(bearer, " ")
-			if strSplit[0] == "Bearer" && strSplit[1] != "" {
-				if strSplit[1] == key {
-					c.Next()
-				} else {
-					c.AbortWithStatus(401)
-					c.JSON(401, gin.H{
-						"status":  401,
-						"message": "unauthorized",
-					})
-				}
-			} else {
-				c.AbortWithStatus(401)
-				c.JSON(401, gin.H{
-					"status":  401,
-					"message": "unauthorized",
-				})
-			}
-		} else {
-			c.AbortWithStatus(401)
-			c.JSON(401, gin.H{
-				"status":  401,
-				"message": "unauthorized",
-			})
-		}
-	}
-}
-
 func main() {
+	//database.DbInit()
 	jabatanController := new(controllers.Jabatan)
+	pegawaiController := new(controllers.Pegawai)
 
 	router := gin.Default()
-	router.Use(middleware())
+	router.Use(middleware.ServiceAuth())
 
-	jabatan := router.Group("/jabatan")
+	//route api
+	api := router.Group("/api")
 	{
-		jabatan.GET("/", jabatanController.GetAllJabatan)
-		jabatan.POST("/update/:id_jabatan", jabatanController.UpdateJabatan)
-		jabatan.GET("/update/:id_jabatan", jabatanController.UpdateJabatan)
-	}
+		//CRUD jabatan routes
+		jabatan := api.Group("/jabatan")
+		{
+			jabatan.GET("/", jabatanController.GetAllJabatan)
+			jabatan.POST("/tambah", jabatanController.TambahJabatan)
+			jabatan.POST("/update/:id_jabatan", jabatanController.UpdateJabatan)
+			jabatan.GET("/update/:id_jabatan", jabatanController.UpdateJabatan)
+			jabatan.POST("/hapus/:id_jabatan", jabatanController.HapusJabatan)
+		}
 
+		//CRUD pegawai routes
+		pegawai := api.Group("/pegawai")
+		{
+			pegawai.GET("/", pegawaiController.GetAllPegawai)
+			pegawai.POST("/tambah", pegawaiController.TambahPegawai)
+			pegawai.GET("/update/:id_pegawai", pegawaiController.UpdatePegawai)
+			pegawai.POST("/update/:id_pegawai", pegawaiController.UpdatePegawai)
+			pegawai.POST("/hapus/:id_pegawai", pegawaiController.DeletePegawai)
+		}
+	}
 	router.Run(":" + conf.HttpPort)
 }

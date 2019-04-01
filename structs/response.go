@@ -5,13 +5,8 @@ type ResJabatan struct {
 	NamaJabatan string `form:"nama" json:"nama"`
 }
 
-type DataResponse struct {
-	Status  int          `json:"status"`
-	Message string       `json:"message"`
-	Data    []ResJabatan `json:"data"`
-}
-
-type StdrResponse struct {
-	Status  int    `json:"status"`
-	Message string `json:"message"`
+type ResPegawai struct {
+	IDPegawai int    `form:"id" json:"id"`
+	Nama      string `form:"nama" json:"nama"`
+	Alamat    string `form:"alamat" json:"alamat"`
 }

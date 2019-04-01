@@ -2,6 +2,7 @@ package controllers
 
 import (
 	gin "github.com/gin-gonic/gin"
+	"github.com/jinzhu/gorm"
 	"github.com/seregant/cockroach-test/database"
 	"github.com/seregant/cockroach-test/structs"
 )
@@ -10,7 +11,6 @@ type Jabatan struct{}
 
 func (w *Jabatan) GetAllJabatan(c *gin.Context) {
 	var arr_jabatan []structs.ResJabatan
-	var response structs.DataResponse
 	var jabatan []structs.Jabatan
 
 	var db = database.DbConnect()
@@ -22,11 +22,22 @@ func (w *Jabatan) GetAllJabatan(c *gin.Context) {
 		arr_jabatan = append(arr_jabatan, structs.ResJabatan{IDJabatan: jabat.IDJabatan, NamaJabatan: jabat.NamaJabatan})
 	}
 
-	response.Status = 200
-	response.Message = "Success"
-	response.Data = arr_jabatan
+	c.JSON(200, gin.H{
+		"status":  "200",
+		"message": "success",
+		"data":    arr_jabatan,
+	})
+}
 
-	c.JSON(200, response)
+func (w *Jabatan) TambahJabatan(c *gin.Context) {
+	var dataJabatan, _ = c.GetPostForm("NamaJabatan")
+
+	db := database.DbConnect()
+	defer db.Close()
+
+	add := db.Create(&structs.Jabatan{NamaJabatan: dataJabatan})
+
+	isError(add, c)
 }
 
 func (w *Jabatan) UpdateJabatan(c *gin.Context) {
@@ -36,9 +47,6 @@ func (w *Jabatan) UpdateJabatan(c *gin.Context) {
 			"message": "method not allowed",
 		})
 	} else {
-		var response structs.StdrResponse
-		c.Request.ParseForm()
-
 		var IDtoEdit = c.Param("id_jabatan")
 		var UpdatedData, _ = c.GetPostForm("NamaJabatan")
 
@@ -46,29 +54,44 @@ func (w *Jabatan) UpdateJabatan(c *gin.Context) {
 		db.LogMode(true)
 		defer db.Close()
 
-		update := db.Model(&structs.Jabatan{}).Where("jabatan_id = ?", IDtoEdit).Update("NamaJabatan", UpdatedData)
+		update := db.Model(&structs.Jabatan{}).Where("jabatan_id = ? ", IDtoEdit).Update("NamaJabatan", UpdatedData)
 
-		if update.GetErrors() != nil {
+		isError(update, c)
+	}
+}
 
-			type errMsg struct {
-				message string
-			}
+func (w *Jabatan) HapusJabatan(c *gin.Context) {
+	var IdToDel = c.Param("id_jabatan")
 
-			var errData []errMsg
+	var db = database.DbConnect()
+	defer db.Close()
 
-			for _, err := range update.GetErrors() {
-				errData = append(errData, errMsg{message: err.Error()})
-			}
+	delete := db.Where("jabatan_id = ? ", IdToDel).Delete(&structs.Jabatan{})
 
-			response.Status = 204
-			response.Message = errData[0].message
+	isError(delete, c)
+}
 
-			c.JSON(200, response)
-		} else {
-			response.Status = 200
-			response.Message = "Success"
+func isError(a *gorm.DB, c *gin.Context) {
+	if a.GetErrors() != nil {
 
-			c.JSON(200, response)
+		type errMsg struct {
+			message string
 		}
+
+		var errData []errMsg
+
+		for _, err := range a.GetErrors() {
+			errData = append(errData, errMsg{message: err.Error()})
+		}
+		c.JSON(204, gin.H{
+			"status":   "204",
+			"message":  "operation failed",
+			"err_data": errData,
+		})
+	} else {
+		c.JSON(200, gin.H{
+			"status":  "200",
+			"message": "OK",
+		})
 	}
 }
