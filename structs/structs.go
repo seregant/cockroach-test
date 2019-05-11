@@ -38,11 +38,11 @@ func (Jabatan) TableName() string {
 }
 
 type Pekerjaan struct {
-	IDPekerjaan   int    `gorm:"primary_key:yes;column:pekerjaan_id;auto_increment:yes"`
-	NamaPekerjaan string `gorm:"column;pekerjaan_nama"`
-	IDPj          int    `gorm:"column:pegawai_id"`
-	TimID         int    `gorm:"column:team_id"`
-	Deadline      *time.Time
+	IDPekerjaan   int       `gorm:"primary_key:yes;column:pekerjaan_id;auto_increment:yes"`
+	NamaPekerjaan string    `gorm:"column;pekerjaan_nama"`
+	IDPj          int       `gorm:"column:pegawai_id"`
+	TimID         time.Time `gorm:"column:team_id"`
+	Deadline      string    `gorm:"column:deadline"`
 }
 
 func (Pekerjaan) TableName() string {
@@ -50,8 +50,8 @@ func (Pekerjaan) TableName() string {
 }
 
 type Team struct {
-	IDTeam    int `gorm:"column:team_id"`
-	IDPegawai int `gotm:"column:pegawai_id"`
+	IDTeam    time.Time `gorm:"column:team_id"`
+	IDPegawai int       `gotm:"column:pegawai_id"`
 }
 
 func (Team) TableName() string {

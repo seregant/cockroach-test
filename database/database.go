@@ -33,11 +33,15 @@ func DbInit() {
 	db.AutoMigrate(&structs.Pekerjaan{})
 	db.AutoMigrate(&structs.Team{})
 
-	// fmt.Println("Initiating tables...")
+	fmt.Println("Initiating tables...")
 
 	// db.Create(&structs.Jabatan{NamaJabatan: "direktur"})
 	// db.Create(&structs.Jabatan{NamaJabatan: "manager"})
 	// db.Create(&structs.Jabatan{NamaJabatan: "supervisor"})
 	// db.Create(&structs.Jabatan{NamaJabatan: "staff"})
 
+	// db.Create(&structs.Divisi{NamaDivisi: "keuangan"})
+	// db.Create(&structs.Divisi{NamaDivisi: "hrd"})
+	// db.Create(&structs.Divisi{NamaDivisi: "sales"})
+	// db.Create(&structs.Divisi{NamaDivisi: "teknis"})
 }

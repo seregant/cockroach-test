@@ -5,6 +5,11 @@ type ResJabatan struct {
 	NamaJabatan string `form:"nama" json:"nama"`
 }
 
+type ResDivisi struct {
+	IDDivisi   int    `form:"id" json:"id"`
+	NamaDivisi string `form:"nama" json:"nama"`
+}
+
 type ResPegawai struct {
 	IDPegawai int    `form:"id" json:"id"`
 	Nama      string `form:"nama" json:"nama"`
@@ -14,4 +19,12 @@ type ResPegawai struct {
 	Email     string `form:"email" json:"email"`
 	JabatanID int    `form:"jabatan_id" json:"jabatan_id"`
 	DivisiID  int    `form:"divisi_id" json:"divisi_id"`
+}
+
+type ResPekerjaan struct {
+	IDPekerjaan   int      `form:"id" json:"id"`
+	NamaPekerjaan string   `form:"nama" json:"nama"`
+	NamaPj        string   `form:"pj" json:"pj"`
+	Tim           []string `form:"anggota_tim" json:"anggota_tim"`
+	Deadline      string   `form:"deadline" json:"deadline"`
 }
