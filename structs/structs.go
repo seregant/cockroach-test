@@ -1,11 +1,18 @@
 package structs
 
+import "time"
+
 var prefix = "krywn_"
 
 type Pegawai struct {
 	IDPegawai int    `gorm:"primary_key:yes;column:pegawai_id;auto_increment:yes"`
 	Nama      string `gorm:"column:pegawai_nama"`
 	Alamat    string `gorm:"column:pegawai_alamat"`
+	Username  string `gorm:"column:pegawai_username"`
+	Password  string `gorm:"column:pegawai_password"`
+	Email     string `gorm:"column:pegawai_email"`
+	JabatanID int    `gorm:"column:jabatan_id"`
+	DivisiID  int    `gorm:"column:divisi_id"`
 }
 
 func (Pegawai) TableName() string {
@@ -28,4 +35,25 @@ type Jabatan struct {
 
 func (Jabatan) TableName() string {
 	return prefix + "jabatan"
+}
+
+type Pekerjaan struct {
+	IDPekerjaan   int    `gorm:"primary_key:yes;column:pekerjaan_id;auto_increment:yes"`
+	NamaPekerjaan string `gorm:"column;pekerjaan_nama"`
+	IDPj          int    `gorm:"column:pegawai_id"`
+	TimID         int    `gorm:"column:team_id"`
+	Deadline      *time.Time
+}
+
+func (Pekerjaan) TableName() string {
+	return prefix + "pekerjaan"
+}
+
+type Team struct {
+	IDTeam    int `gorm:"column:team_id"`
+	IDPegawai int `gotm:"column:pegawai_id"`
+}
+
+func (Team) TableName() string {
+	return prefix + "team"
 }

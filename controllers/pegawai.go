@@ -1,8 +1,11 @@
 package controllers
 
 import (
+	"strconv"
+
 	"github.com/gin-gonic/gin"
 	"github.com/seregant/cockroach-test/database"
+	"github.com/seregant/cockroach-test/hash"
 	"github.com/seregant/cockroach-test/structs"
 )
 
@@ -18,7 +21,16 @@ func (w *Pegawai) GetAllPegawai(c *gin.Context) {
 	db.Find(&pegawai)
 
 	for _, data := range pegawai {
-		arr_pegawai = append(arr_pegawai, structs.ResPegawai{IDPegawai: data.IDPegawai, Nama: data.Nama, Alamat: data.Alamat})
+		arr_pegawai = append(arr_pegawai, structs.ResPegawai{
+			IDPegawai: data.IDPegawai,
+			Nama:      data.Nama,
+			Alamat:    data.Alamat,
+			Username:  data.Username,
+			Password:  data.Password,
+			Email:     data.Email,
+			JabatanID: data.JabatanID,
+			DivisiID:  data.DivisiID,
+		})
 	}
 
 	c.JSON(200, gin.H{
@@ -32,11 +44,29 @@ func (w *Pegawai) GetAllPegawai(c *gin.Context) {
 func (w *Pegawai) TambahPegawai(c *gin.Context) {
 	var nama, _ = c.GetPostForm("nama")
 	var alamat, _ = c.GetPostForm("alamat")
+	var username, _ = c.GetPostForm("username")
+	var password, _ = c.GetPostForm("password")
+	var email, _ = c.GetPostForm("email")
+	var divisi, _ = c.GetPostForm("divisi")
+	var jabatan, _ = c.GetPostForm("jabatan")
+
+	divisiVal, _ := strconv.Atoi(divisi)
+	jabatanVal, _ := strconv.Atoi(jabatan)
+
+	passVal, _ := hash.HashPassword(password)
 
 	db := database.DbConnect()
 	defer db.Close()
 
-	add := db.Create(&structs.Pegawai{Nama: nama, Alamat: alamat})
+	add := db.Create(&structs.Pegawai{
+		Nama:      nama,
+		Alamat:    alamat,
+		Username:  username,
+		Password:  passVal,
+		Email:     email,
+		JabatanID: jabatanVal,
+		DivisiID:  divisiVal,
+	})
 
 	isError(add, c)
 
@@ -52,12 +82,19 @@ func (w *Pegawai) UpdatePegawai(c *gin.Context) {
 		var IDtoEdit = c.Param("id_pegawai")
 		var dataNama, _ = c.GetPostForm("nama")
 		var dataAlamat, _ = c.GetPostForm("alamat")
+		var username, _ = c.GetPostForm("username")
+		var password, _ = c.GetPostForm("password")
+		var email, _ = c.GetPostForm("email")
+		var divisi, _ = c.GetPostForm("divisi")
+		var jabatan, _ = c.GetPostForm("jabatan")
+
+		passVal, _ := hash.HashPassword(password)
 
 		db := database.DbConnect()
 		db.LogMode(true)
 		defer db.Close()
 
-		update := db.Exec("UPDATE krywn_pegawai SET pegawai_nama='" + dataNama + "', pegawai_alamat='" + dataAlamat + "' WHERE pegawai_id = " + IDtoEdit)
+		update := db.Exec("UPDATE krywn_pegawai SET pegawai_nama='" + dataNama + "', pegawai_alamat='" + dataAlamat + "', pegawai_username='" + username + "', pegawai_password='" + passVal + "', pegawai_email='" + email + "', jabatan_id=" + jabatan + ", divisi_id=" + divisi + " WHERE pegawai_id = " + IDtoEdit)
 
 		isError(update, c)
 	}

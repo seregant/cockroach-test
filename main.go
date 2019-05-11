@@ -8,12 +8,13 @@ import (
 
 	"github.com/seregant/cockroach-test/config"
 	"github.com/seregant/cockroach-test/controllers"
+	"github.com/seregant/cockroach-test/database"
 )
 
 var conf = config.SetConfig()
 
 func main() {
-	//database.DbInit()
+	database.DbInit()
 	jabatanController := new(controllers.Jabatan)
 	pegawaiController := new(controllers.Pegawai)
 

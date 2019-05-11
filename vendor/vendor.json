@@ -46,10 +46,16 @@
 			"revisionTime": "2019-03-26T04:20:56Z"
 		},
 		{
-			"checksumSHA1": "QPjV8nrnzjkHGgLYwlqYCOSbwH4=",
+			"checksumSHA1": "GX2hcQP8YqrXH+laJJIxUFsqoxU=",
 			"path": "github.com/lib/pq/oid",
 			"revision": "d6156e141ac6c06345c7c73f450987a9ed4b751f",
 			"revisionTime": "2019-03-26T04:20:56Z"
+		},
+		{
+			"checksumSHA1": "oCH3J96RWvO8W4xjix47PModpio=",
+			"path": "golang.org/x/crypto/bcrypt",
+			"revision": "cbcb750295291b33242907a04be40e80801d0cfc",
+			"revisionTime": "2019-04-08T03:37:34Z"
 		}
 	],
 	"rootPath": "github.com/seregant/cockroach-test"
