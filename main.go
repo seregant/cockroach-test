@@ -17,6 +17,8 @@ func main() {
 	database.DbInit()
 	jabatanController := new(controllers.Jabatan)
 	pegawaiController := new(controllers.Pegawai)
+	divisiController := new(controllers.Divisi)
+	pekerjaanController := new(controllers.Pekerjaan)
 
 	router := gin.Default()
 	router.Use(middleware.ServiceAuth())
@@ -42,6 +44,24 @@ func main() {
 			pegawai.GET("/update/:id_pegawai", pegawaiController.UpdatePegawai)
 			pegawai.POST("/update/:id_pegawai", pegawaiController.UpdatePegawai)
 			pegawai.POST("/hapus/:id_pegawai", pegawaiController.DeletePegawai)
+		}
+
+		divisi := api.Group("/divisi")
+		{
+			divisi.GET("/", divisiController.GetAllDivisi)
+			divisi.POST("/tambah", divisiController.TambahDivisi)
+			divisi.GET("/update/:id_divisi", divisiController.UpdateDivisi)
+			divisi.POST("/update/:id_divisi", divisiController.UpdateDivisi)
+			divisi.POST("/hapus/:id_divisi", divisiController.HapusDivisi)
+		}
+
+		pekerjaan := api.Group("/pekerjaan")
+		{
+			pekerjaan.GET("/", pekerjaanController.GetAllPekerjaan)
+			pekerjaan.POST("/tambah", pekerjaanController.TambahPekerjaan)
+			// pekerjaan.POST("/update/:id_pekerjaan", pekerjaanController.UpdatePekerjaan)
+			// pekerjaan.GET("/update/:id_pekerjaan", pekerjaanController.UpdatePekerjaan)
+			pekerjaan.POST("/hapus/:id_pekerjaan", pekerjaanController.DeletePekerjaan)
 		}
 	}
 	router.Run(":" + conf.HttpPort)
