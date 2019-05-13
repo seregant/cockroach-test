@@ -39,7 +39,7 @@ func (Jabatan) TableName() string {
 
 type Pekerjaan struct {
 	IDPekerjaan   int       `gorm:"primary_key:yes;column:pekerjaan_id;auto_increment:yes"`
-	NamaPekerjaan string    `gorm:"column;pekerjaan_nama"`
+	NamaPekerjaan string    `gorm:"column:pekerjaan_nama"`
 	IDPj          int       `gorm:"column:pegawai_id"`
 	TimID         time.Time `gorm:"column:team_id"`
 	Deadline      string    `gorm:"column:deadline"`

@@ -77,9 +77,9 @@ func (w *Pekerjaan) TambahPekerjaan(c *gin.Context) {
 
 	for _, dataTeamId := range TeamMemberId {
 		var pegawaiStruct structs.Pegawai
-		addTeam := db.Where("pegawai_id = ?", dataTeamId).First(&pegawaiStruct)
+		db.Where("pegawai_id = ?", dataTeamId).First(&pegawaiStruct)
 		fmt.Println(pegawaiStruct.IDPegawai)
-		db.Create(&structs.Team{
+		addTeam := db.Create(&structs.Team{
 			IDTeam:    teamId,
 			IDPegawai: pegawaiStruct.IDPegawai,
 		})
@@ -88,25 +88,43 @@ func (w *Pekerjaan) TambahPekerjaan(c *gin.Context) {
 	}
 }
 
-// func (w *Pekerjaan) UpdatePekerjaan(c *gin.Context) {
-// 	if c.Request.Method == "GET" {
-// 		c.JSON(405, gin.H{
-// 			"status":  "405",
-// 			"message": "method not allowed",
-// 		})
-// 	} else {
+func (w *Pekerjaan) UpdatePekerjaan(c *gin.Context) {
+	if c.Request.Method == "GET" {
+		c.JSON(405, gin.H{
+			"status":  "405",
+			"message": "method not allowed",
+		})
+	} else {
+		var IDToEdit = c.Param("id_pekerjaan")
+		var Nama, _ = c.GetPostForm("nama")
+		var PjId, _ = c.GetPostForm("pj_id")
+		var Deadline, _ = c.GetPostForm("deadline")
+		var TeamMemberId = c.PostFormArray("team_member_id")
 
-// 		passVal, _ := hash.HashPassword(password)
+		var team structs.Team
+		var pekerjaan structs.Pekerjaan
 
-// 		db := database.DbConnect()
-// 		db.LogMode(true)
-// 		defer db.Close()
+		db := database.DbConnect()
+		// db.LogMode(true)
+		defer db.Close()
 
-// 		update := db.Exec("UPDATE krywn_pegawai SET pegawai_nama='" + dataNama + "', pegawai_alamat='" + dataAlamat + "', pegawai_username='" + username + "', pegawai_password='" + passVal + "', pegawai_email='" + email + "', jabatan_id=" + jabatan + ", divisi_id=" + divisi + " WHERE pegawai_id = " + IDtoEdit)
+		db.Where("pekerjaan_id = ?", IDToEdit).First(&pekerjaan)
+		db.Where("team_id = ?", pekerjaan.TimID).Delete(&team)
 
-// 		isError(update, c)
-// 	}
-// }
+		update := db.Exec("UPDATE krywn_pekerjaan SET pekerjaan_nama='" + Nama + "', pegawai_id='" + PjId + "', deadline='" + Deadline + "' WHERE pekerjaan_id = " + IDToEdit)
+
+		for _, data := range TeamMemberId {
+			var pegawaiStruct structs.Pegawai
+			db.Where("pegawai_id = ?", data).First(&pegawaiStruct)
+			db.Create(&structs.Team{
+				IDTeam:    pekerjaan.TimID,
+				IDPegawai: pegawaiStruct.IDPegawai,
+			})
+		}
+
+		isError(update, c)
+	}
+}
 
 func (w *Pekerjaan) DeletePekerjaan(c *gin.Context) {
 	var IdToDel = c.Param("id_pekerjaan")

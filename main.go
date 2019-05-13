@@ -59,8 +59,8 @@ func main() {
 		{
 			pekerjaan.GET("/", pekerjaanController.GetAllPekerjaan)
 			pekerjaan.POST("/tambah", pekerjaanController.TambahPekerjaan)
-			// pekerjaan.POST("/update/:id_pekerjaan", pekerjaanController.UpdatePekerjaan)
-			// pekerjaan.GET("/update/:id_pekerjaan", pekerjaanController.UpdatePekerjaan)
+			pekerjaan.POST("/update/:id_pekerjaan", pekerjaanController.UpdatePekerjaan)
+			pekerjaan.GET("/update/:id_pekerjaan", pekerjaanController.UpdatePekerjaan)
 			pekerjaan.POST("/hapus/:id_pekerjaan", pekerjaanController.DeletePekerjaan)
 		}
 	}
