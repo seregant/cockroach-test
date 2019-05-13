@@ -1,8 +1,6 @@
 package main
 
 import (
-	"github.com/seregant/cockroach-test/middleware"
-
 	gin "github.com/gin-gonic/gin"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 
@@ -21,7 +19,7 @@ func main() {
 	pekerjaanController := new(controllers.Pekerjaan)
 
 	router := gin.Default()
-	router.Use(middleware.ServiceAuth())
+	// router.Use(middleware.ServiceAuth())
 
 	//route api
 	api := router.Group("/api")
