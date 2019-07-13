@@ -14,9 +14,3 @@ How to run :
 4. To start the service execute
 
         go run main.go
-
-
-### Api Routes
-
-    GET /jabatan                 --> get all data jabatan
-    POST /jabatan/update/{id}    --> update a jabatan's row

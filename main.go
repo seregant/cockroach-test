@@ -7,6 +7,7 @@ import (
 	"github.com/seregant/cockroach-test/config"
 	"github.com/seregant/cockroach-test/controllers"
 	"github.com/seregant/cockroach-test/database"
+	"github.com/seregant/cockroach-test/middleware"
 )
 
 var conf = config.SetConfig()
@@ -17,9 +18,11 @@ func main() {
 	pegawaiController := new(controllers.Pegawai)
 	divisiController := new(controllers.Divisi)
 	pekerjaanController := new(controllers.Pekerjaan)
+	//mid := new(middleware.Default)
 
 	router := gin.Default()
-	// router.Use(middleware.ServiceAuth())
+	// corsConfig := middleware.CORSMiddleware()
+	router.Use(middleware.CORSMiddleware())
 
 	//route api
 	api := router.Group("/api")
