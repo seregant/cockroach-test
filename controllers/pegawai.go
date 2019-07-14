@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -14,6 +15,8 @@ type Pegawai struct{}
 func (w *Pegawai) GetAllPegawai(c *gin.Context) {
 	var arr_pegawai []structs.ResPegawai
 	var pegawai []structs.Pegawai
+	var jabatan structs.Jabatan
+	var divisi structs.Divisi
 
 	db := database.DbConnect()
 	defer db.Close()
@@ -21,6 +24,9 @@ func (w *Pegawai) GetAllPegawai(c *gin.Context) {
 	db.Find(&pegawai)
 
 	for _, data := range pegawai {
+		fmt.Println(data.IDPegawai)
+		db.Where("jabatan_id = ?", data.JabatanID).Find(&jabatan)
+		db.Where("divisi_id = ?", data.DivisiID).Find(&divisi)
 		arr_pegawai = append(arr_pegawai, structs.ResPegawai{
 			IDPegawai: data.IDPegawai,
 			Nama:      data.Nama,
@@ -28,8 +34,8 @@ func (w *Pegawai) GetAllPegawai(c *gin.Context) {
 			Username:  data.Username,
 			Password:  data.Password,
 			Email:     data.Email,
-			JabatanID: data.JabatanID,
-			DivisiID:  data.DivisiID,
+			JabatanID: jabatan.NamaJabatan,
+			DivisiID:  divisi.NamaDivisi,
 		})
 	}
 
@@ -50,6 +56,8 @@ func (w *Pegawai) TambahPegawai(c *gin.Context) {
 	var divisi, _ = c.GetPostForm("divisi")
 	var jabatan, _ = c.GetPostForm("jabatan")
 
+	fmt.Println(nama, alamat, username, password, email, divisi, jabatan)
+
 	divisiVal, _ := strconv.Atoi(divisi)
 	jabatanVal, _ := strconv.Atoi(jabatan)
 
@@ -59,6 +67,7 @@ func (w *Pegawai) TambahPegawai(c *gin.Context) {
 	defer db.Close()
 
 	add := db.Create(&structs.Pegawai{
+		IDPegawai: "PG" + hash.GenerateIDData(),
 		Nama:      nama,
 		Alamat:    alamat,
 		Username:  username,

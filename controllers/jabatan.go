@@ -1,9 +1,12 @@
 package controllers
 
 import (
+	"fmt"
+
 	gin "github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	"github.com/seregant/cockroach-test/database"
+	"github.com/seregant/cockroach-test/hash"
 	"github.com/seregant/cockroach-test/structs"
 )
 
@@ -31,11 +34,12 @@ func (w *Jabatan) GetAllJabatan(c *gin.Context) {
 
 func (w *Jabatan) TambahJabatan(c *gin.Context) {
 	var dataJabatan, _ = c.GetPostForm("NamaJabatan")
+	var idJabatan = hash.GenerateIDData()
 
 	db := database.DbConnect()
 	defer db.Close()
 
-	add := db.Create(&structs.Jabatan{NamaJabatan: dataJabatan})
+	add := db.Create(&structs.Jabatan{IDJabatan: "JB" + idJabatan, NamaJabatan: dataJabatan})
 
 	isError(add, c)
 }
@@ -72,6 +76,7 @@ func (w *Jabatan) HapusJabatan(c *gin.Context) {
 }
 
 func isError(a *gorm.DB, c *gin.Context) {
+	// fmt.Println(a.Value)
 	if a.GetErrors() != nil {
 
 		type errMsg struct {
@@ -79,12 +84,12 @@ func isError(a *gorm.DB, c *gin.Context) {
 		}
 
 		var errData []errMsg
-
+		fmt.Println(a.GetErrors())
 		for _, err := range a.GetErrors() {
 			errData = append(errData, errMsg{message: err.Error()})
 		}
-		c.JSON(204, gin.H{
-			"status":   "204",
+		c.JSON(200, gin.H{
+			"status":   "200",
 			"message":  "operation failed",
 			"err_data": errData,
 		})

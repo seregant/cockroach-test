@@ -5,7 +5,7 @@ import "time"
 var prefix = "krywn_"
 
 type Pegawai struct {
-	IDPegawai int    `gorm:"primary_key:yes;column:pegawai_id;auto_increment:yes"`
+	IDPegawai string `gorm:"primary_key:yes;column:pegawai_id"`
 	Nama      string `gorm:"column:pegawai_nama"`
 	Alamat    string `gorm:"column:pegawai_alamat"`
 	Username  string `gorm:"column:pegawai_username"`
@@ -20,7 +20,7 @@ func (Pegawai) TableName() string {
 }
 
 type Divisi struct {
-	IDDivisi   int    `gorm:"primary_key:yes;column:divisi_id;auto_increment:yes"`
+	IDDivisi   string `gorm:"column:divisi_id"`
 	NamaDivisi string `gorm:"column:divisi_nama"`
 }
 
@@ -29,7 +29,7 @@ func (Divisi) TableName() string {
 }
 
 type Jabatan struct {
-	IDJabatan   int    `gorm:"primary_key:yes;column:jabatan_id;auto_increment:yes"`
+	IDJabatan   string `gorm:"column:jabatan_id"`
 	NamaJabatan string `gorm:"column:jabatan_nama"`
 }
 
@@ -51,7 +51,7 @@ func (Pekerjaan) TableName() string {
 
 type Team struct {
 	IDTeam    time.Time `gorm:"column:team_id"`
-	IDPegawai int       `gotm:"column:pegawai_id"`
+	IDPegawai string    `gotm:"column:pegawai_id"`
 }
 
 func (Team) TableName() string {

@@ -1,24 +1,24 @@
 package structs
 
 type ResJabatan struct {
-	IDJabatan   int    `form:"id" json:"id"`
+	IDJabatan   string `form:"id" json:"id"`
 	NamaJabatan string `form:"nama" json:"nama"`
 }
 
 type ResDivisi struct {
-	IDDivisi   int    `form:"id" json:"id"`
+	IDDivisi   string `form:"id" json:"id"`
 	NamaDivisi string `form:"nama" json:"nama"`
 }
 
 type ResPegawai struct {
-	IDPegawai int    `form:"id" json:"id"`
+	IDPegawai string `form:"id" json:"id"`
 	Nama      string `form:"nama" json:"nama"`
 	Alamat    string `form:"alamat" json:"alamat"`
 	Username  string `form:"username" json:"username"`
 	Password  string `form:"password" json:"password"`
 	Email     string `form:"email" json:"email"`
-	JabatanID int    `form:"jabatan_id" json:"jabatan_id"`
-	DivisiID  int    `form:"divisi_id" json:"divisi_id"`
+	JabatanID string `form:"jabatan" json:"jabatan"`
+	DivisiID  string `form:"divisi" json:"divisi"`
 }
 
 type ResPekerjaan struct {

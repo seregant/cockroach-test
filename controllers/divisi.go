@@ -1,8 +1,12 @@
 package controllers
 
 import (
+	"fmt"
+
 	gin "github.com/gin-gonic/gin"
+	"github.com/jinzhu/gorm"
 	"github.com/seregant/cockroach-test/database"
+	"github.com/seregant/cockroach-test/hash"
 	"github.com/seregant/cockroach-test/structs"
 )
 
@@ -30,11 +34,12 @@ func (w *Divisi) GetAllDivisi(c *gin.Context) {
 
 func (w *Divisi) TambahDivisi(c *gin.Context) {
 	var dataDivisi, _ = c.GetPostForm("NamaDivisi")
+	var idDivisi = hash.GenerateIDData()
 
 	db := database.DbConnect()
 	defer db.Close()
 
-	add := db.Create(&structs.Divisi{NamaDivisi: dataDivisi})
+	add := db.Create(&structs.Divisi{IDDivisi: idDivisi, NamaDivisi: dataDivisi})
 
 	isError(add, c)
 }
@@ -47,13 +52,21 @@ func (w *Divisi) UpdateDivisi(c *gin.Context) {
 		})
 	} else {
 		var IDtoEdit = c.Param("id_divisi")
+		fmt.Println(IDtoEdit)
 		var UpdatedData, _ = c.GetPostForm("NamaDivisi")
-
+		fmt.Println(UpdatedData)
 		db := database.DbConnect()
 		db.LogMode(true)
 		defer db.Close()
 
-		update := db.Model(&structs.Divisi{}).Where("divisi_id = ? ", IDtoEdit).Update("NamaJabatan", UpdatedData)
+		if err := db.Where("divisi_id = ?", IDtoEdit).First(&structs.Divisi{}).Error; err != nil {
+			// error handling...
+			if gorm.IsRecordNotFoundError(err) {
+				fmt.Println(err)
+			}
+		}
+
+		update := db.Model(&structs.Divisi{}).Where("divisi_id = ?", IDtoEdit).Update("divisi_nama", UpdatedData)
 
 		isError(update, c)
 	}
