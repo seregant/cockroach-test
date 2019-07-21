@@ -13,7 +13,7 @@ func SetConfig() Config {
 	var config Config
 
 	//set configuration here
-	config.Host = "localhost"
+	config.Host = "cockroachdb"
 	config.Port = "26257" //cockroachdb's port
 	config.User = "root"
 	config.DbName = "karyawan"
