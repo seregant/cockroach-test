@@ -3,6 +3,7 @@ package database
 import (
 	"fmt"
 	"log"
+	"time"
 
 	"github.com/seregant/cockroach-test/config"
 	"github.com/seregant/cockroach-test/hash"
@@ -40,12 +41,18 @@ func DbInit() {
 	fmt.Println("Initiating tables...")
 
 	db.Create(&structs.Jabatan{IDJabatan: "JB" + hash.GenerateIDData(), NamaJabatan: "direktur"})
+	time.Sleep(1 * time.Second)
 	db.Create(&structs.Jabatan{IDJabatan: "JB" + hash.GenerateIDData(), NamaJabatan: "manager"})
+	time.Sleep(1 * time.Second)
 	db.Create(&structs.Jabatan{IDJabatan: "JB" + hash.GenerateIDData(), NamaJabatan: "supervisor"})
+	time.Sleep(1 * time.Second)
 	db.Create(&structs.Jabatan{IDJabatan: "JB" + hash.GenerateIDData(), NamaJabatan: "staff"})
 
 	db.Create(&structs.Divisi{IDDivisi: "DV" + hash.GenerateIDData(), NamaDivisi: "keuangan"})
+	time.Sleep(1 * time.Second)
 	db.Create(&structs.Divisi{IDDivisi: "DV" + hash.GenerateIDData(), NamaDivisi: "hrd"})
+	time.Sleep(1 * time.Second)
 	db.Create(&structs.Divisi{IDDivisi: "DV" + hash.GenerateIDData(), NamaDivisi: "sales"})
+	time.Sleep(1 * time.Second)
 	db.Create(&structs.Divisi{IDDivisi: "DV" + hash.GenerateIDData(), NamaDivisi: "teknis"})
 }
