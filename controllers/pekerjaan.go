@@ -7,6 +7,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/seregant/cockroach-test/database"
+	"github.com/seregant/cockroach-test/hash"
 	"github.com/seregant/cockroach-test/structs"
 )
 
@@ -52,6 +53,7 @@ func (w *Pekerjaan) GetAllPekerjaan(c *gin.Context) {
 }
 
 func (w *Pekerjaan) TambahPekerjaan(c *gin.Context) {
+	idPekerjaan := hash.GenerateIDData()
 
 	var Nama, _ = c.GetPostForm("nama")
 	var PjId, _ = c.GetPostForm("pj_id")
@@ -67,6 +69,7 @@ func (w *Pekerjaan) TambahPekerjaan(c *gin.Context) {
 	teamId.Format("20060102150405")
 
 	db.Create(&structs.Pekerjaan{
+		IDPekerjaan:   "PK" + idPekerjaan,
 		NamaPekerjaan: Nama,
 		IDPj:          PjIdInt,
 		TimID:         teamId,

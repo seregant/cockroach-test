@@ -39,7 +39,7 @@ func (w *Divisi) TambahDivisi(c *gin.Context) {
 	db := database.DbConnect()
 	defer db.Close()
 
-	db.Create(&structs.Divisi{IDDivisi: idDivisi, NamaDivisi: dataDivisi})
+	db.Create(&structs.Divisi{IDDivisi: "DV"+idDivisi, NamaDivisi: dataDivisi})
 
 }
 
