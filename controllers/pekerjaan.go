@@ -66,25 +66,22 @@ func (w *Pekerjaan) TambahPekerjaan(c *gin.Context) {
 	teamId := time.Now()
 	teamId.Format("20060102150405")
 
-	add := db.Create(&structs.Pekerjaan{
+	db.Create(&structs.Pekerjaan{
 		NamaPekerjaan: Nama,
 		IDPj:          PjIdInt,
 		TimID:         teamId,
 		Deadline:      Deadline,
 	})
 
-	isError(add, c)
-
 	for _, dataTeamId := range TeamMemberId {
 		var pegawaiStruct structs.Pegawai
 		db.Where("pegawai_id = ?", dataTeamId).First(&pegawaiStruct)
 		fmt.Println(pegawaiStruct.IDPegawai)
-		addTeam := db.Create(&structs.Team{
+
+		db.Create(&structs.Team{
 			IDTeam:    teamId,
 			IDPegawai: pegawaiStruct.IDPegawai,
 		})
-
-		isError(addTeam, c)
 	}
 }
 
@@ -111,7 +108,7 @@ func (w *Pekerjaan) UpdatePekerjaan(c *gin.Context) {
 		db.Where("pekerjaan_id = ?", IDToEdit).First(&pekerjaan)
 		db.Where("team_id = ?", pekerjaan.TimID).Delete(&team)
 
-		update := db.Exec("UPDATE krywn_pekerjaan SET pekerjaan_nama='" + Nama + "', pegawai_id='" + PjId + "', deadline='" + Deadline + "' WHERE pekerjaan_id = " + IDToEdit)
+		db.Exec("UPDATE krywn_pekerjaan SET pekerjaan_nama='" + Nama + "', pegawai_id='" + PjId + "', deadline='" + Deadline + "' WHERE pekerjaan_id = " + IDToEdit)
 
 		for _, data := range TeamMemberId {
 			var pegawaiStruct structs.Pegawai
@@ -121,8 +118,6 @@ func (w *Pekerjaan) UpdatePekerjaan(c *gin.Context) {
 				IDPegawai: pegawaiStruct.IDPegawai,
 			})
 		}
-
-		isError(update, c)
 	}
 }
 
@@ -134,9 +129,7 @@ func (w *Pekerjaan) DeletePekerjaan(c *gin.Context) {
 	defer db.Close()
 	db.Where("team_id = ?", IdToDel).First(&pekerjaan)
 
-	deleteTeam := db.Where("team_id = ?", pekerjaan.TimID).Delete(&structs.Team{})
-	isError(deleteTeam, c)
+	db.Where("team_id = ?", pekerjaan.TimID).Delete(&structs.Team{})
 
-	delete := db.Where("pekerjaan_id = ? ", IdToDel).Delete(&structs.Pekerjaan{})
-	isError(delete, c)
+	db.Where("pekerjaan_id = ? ", IdToDel).Delete(&structs.Pekerjaan{})
 }

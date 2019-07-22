@@ -39,9 +39,7 @@ func (w *Jabatan) TambahJabatan(c *gin.Context) {
 	db := database.DbConnect()
 	defer db.Close()
 
-	add := db.Create(&structs.Jabatan{IDJabatan: "JB" + idJabatan, NamaJabatan: dataJabatan})
-
-	isError(add, c)
+	db.Create(&structs.Jabatan{IDJabatan: "JB" + idJabatan, NamaJabatan: dataJabatan})
 }
 
 func (w *Jabatan) UpdateJabatan(c *gin.Context) {
@@ -58,9 +56,7 @@ func (w *Jabatan) UpdateJabatan(c *gin.Context) {
 		db.LogMode(true)
 		defer db.Close()
 
-		update := db.Model(&structs.Jabatan{}).Where("jabatan_id = ? ", IDtoEdit).Update("NamaJabatan", UpdatedData)
-
-		isError(update, c)
+		db.Model(&structs.Jabatan{}).Where("jabatan_id = ? ", IDtoEdit).Update("NamaJabatan", UpdatedData)
 	}
 }
 
@@ -70,9 +66,7 @@ func (w *Jabatan) HapusJabatan(c *gin.Context) {
 	var db = database.DbConnect()
 	defer db.Close()
 
-	delete := db.Where("jabatan_id = ? ", IdToDel).Delete(&structs.Jabatan{})
-
-	isError(delete, c)
+	db.Where("jabatan_id = ? ", IdToDel).Delete(&structs.Jabatan{})
 }
 
 func isError(a *gorm.DB, c *gin.Context) {

@@ -66,7 +66,7 @@ func (w *Pegawai) TambahPegawai(c *gin.Context) {
 	db := database.DbConnect()
 	defer db.Close()
 
-	add := db.Create(&structs.Pegawai{
+	db.Create(&structs.Pegawai{
 		IDPegawai: "PG" + hash.GenerateIDData(),
 		Nama:      nama,
 		Alamat:    alamat,
@@ -76,8 +76,6 @@ func (w *Pegawai) TambahPegawai(c *gin.Context) {
 		JabatanID: jabatanVal,
 		DivisiID:  divisiVal,
 	})
-
-	isError(add, c)
 
 }
 
@@ -103,9 +101,7 @@ func (w *Pegawai) UpdatePegawai(c *gin.Context) {
 		db.LogMode(true)
 		defer db.Close()
 
-		update := db.Exec("UPDATE krywn_pegawai SET pegawai_nama='" + dataNama + "', pegawai_alamat='" + dataAlamat + "', pegawai_username='" + username + "', pegawai_password='" + passVal + "', pegawai_email='" + email + "', jabatan_id=" + jabatan + ", divisi_id=" + divisi + " WHERE pegawai_id = " + IDtoEdit)
-
-		isError(update, c)
+		db.Exec("UPDATE krywn_pegawai SET pegawai_nama='" + dataNama + "', pegawai_alamat='" + dataAlamat + "', pegawai_username='" + username + "', pegawai_password='" + passVal + "', pegawai_email='" + email + "', jabatan_id=" + jabatan + ", divisi_id=" + divisi + " WHERE pegawai_id = " + IDtoEdit)
 	}
 }
 
@@ -115,7 +111,5 @@ func (w *Pegawai) DeletePegawai(c *gin.Context) {
 	var db = database.DbConnect()
 	defer db.Close()
 
-	delete := db.Where("pegawai_id = ? ", IdToDel).Delete(&structs.Pegawai{})
-
-	isError(delete, c)
+	db.Where("pegawai_id = ? ", IdToDel).Delete(&structs.Pegawai{})
 }

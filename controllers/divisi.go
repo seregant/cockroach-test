@@ -39,9 +39,8 @@ func (w *Divisi) TambahDivisi(c *gin.Context) {
 	db := database.DbConnect()
 	defer db.Close()
 
-	add := db.Create(&structs.Divisi{IDDivisi: idDivisi, NamaDivisi: dataDivisi})
+	db.Create(&structs.Divisi{IDDivisi: idDivisi, NamaDivisi: dataDivisi})
 
-	isError(add, c)
 }
 
 func (w *Divisi) UpdateDivisi(c *gin.Context) {
@@ -66,9 +65,8 @@ func (w *Divisi) UpdateDivisi(c *gin.Context) {
 			}
 		}
 
-		update := db.Model(&structs.Divisi{}).Where("divisi_id = ?", IDtoEdit).Update("divisi_nama", UpdatedData)
+		db.Model(&structs.Divisi{}).Where("divisi_id = ?", IDtoEdit).Update("divisi_nama", UpdatedData)
 
-		isError(update, c)
 	}
 }
 
@@ -78,7 +76,5 @@ func (w *Divisi) HapusDivisi(c *gin.Context) {
 	var db = database.DbConnect()
 	defer db.Close()
 
-	delete := db.Where("divisi_id = ? ", IdToDel).Delete(&structs.Divisi{})
-
-	isError(delete, c)
+	db.Where("divisi_id = ? ", IdToDel).Delete(&structs.Divisi{})
 }
