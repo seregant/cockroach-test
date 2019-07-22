@@ -26,34 +26,34 @@ Cara menjalankan :
 
 ## API Route list
 
-  ##CRUD jabatan :
+  CRUD jabatan :
 
 	GET all data    = /jabatan/
 	POST add        = /jabatan/tambah
 	POST update     = /jabatan/update/:id_jabatan
 	POST Delete     = /jabatan/hapus/:id_jabatan
 	
-  ##CRUD pegawai :
+  CRUD pegawai :
 
 	GET all data    = /pegawai/
 	POST add        = /pegawai/tambah
         POST update     = /pegawai/update/:id_pegawai
 	POST Delete     = /pegawai/hapus/:id_pegawai
  
- ##CRUD divisi 
+  CRUD divisi 
 	
 	GET all data    = /divisi/
 	POST add        = /divisi/tambah
 	POST update     = /divisi/update/:id_divisi
 	POST Delete     = /divisi/hapus/:id_divisi
 
- ##CRUD pekerjaan :
+  CRUD pekerjaan :
 
 	GET all data    = /pekerjaan/
 	POST add        = /pekerjaan/tambah
 	POST update     = /pekerjaan/update/:id_pekerjaan
 	POST Delete     = /pekerjaan/hapus/:id_pekerjaan
 
- ##POSTMAN collection link :
+  POSTMAN collection link :
 
         https://www.getpostman.com/collections/6eecd6aa31ad2ec3184e
