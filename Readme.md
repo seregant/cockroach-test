@@ -37,7 +37,7 @@ Cara menjalankan :
 
 	GET all data    = /pegawai/
 	POST add        = /pegawai/tambah
-        POST update     = /pegawai/update/:id_pegawai
+    POST update     = /pegawai/update/:id_pegawai
 	POST Delete     = /pegawai/hapus/:id_pegawai
  
   CRUD divisi 
@@ -57,3 +57,6 @@ Cara menjalankan :
   POSTMAN collection link :
 
         https://www.getpostman.com/collections/6eecd6aa31ad2ec3184e
+
+  Frontend github link :
+		https://github.com/renfaizal/app-datakaryawan.git
